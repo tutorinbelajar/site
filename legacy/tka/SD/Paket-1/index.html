@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tryout TKA Matematika SD 2026 - Paket 1</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        .option-card { cursor: pointer; transition: all 0.2s; border: 2px solid #e5e7eb; position: relative; }
+        .option-card:hover { border-color: #3b82f6; background-color: #f0f7ff; }
+        .selected { border-color: #2563eb; background-color: #dbeafe; font-weight: bold; }
+        .nav-btn { width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 10px; font-weight: bold; cursor: pointer; transition: 0.2s; border: 2px solid transparent; }
+        .nav-unanswered { background-color: #f3f4f6; color: #9ca3af; border-color: #e5e7eb; }
+        .nav-answered { background-color: #2563eb; color: white; }
+        .nav-current { border-color: #1e3a8a; box-shadow: 0 0 0 2px #bfdbfe; }
+        .fade-in { animation: fadeIn 0.4s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .res-box { width: 35px; height: 35px; display: flex; align-items: center; justify-content: center; border-radius: 8px; font-size: 0.8rem; font-weight: bold; color: white; }
+        .res-correct { background-color: #10b981; }
+        .res-wrong { background-color: #ef4444; }
+        img.stimulus-img { max-width: 100%; height: auto; margin: 15px auto; display: block; border-radius: 12px; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1); border: 1px solid #e2e8f0; background: white; }
+        .mjx-chtml { font-size: 110% !important; }
+    </style>
+</head>
+<body class="bg-slate-50 font-sans text-slate-800 min-h-screen font-medium text-sm md:text-base">
+
+    <script>
+        const WA_TUTOR = "628971021300"; 
+    </script>
+
+    <!-- 1. HALAMAN INTRO -->
+    <div id="intro-screen" class="min-h-screen flex items-center justify-center p-4 text-center">
+        <div class="max-w-2xl w-full bg-white rounded-3xl shadow-2xl overflow-hidden border border-slate-200 fade-in">
+            <div class="bg-blue-600 p-8 text-white text-center">
+                <h1 class="text-2xl md:text-3xl font-black mb-2 uppercase tracking-tight">Tryout TKA Matematika SD</h1>
+                <p class="text-blue-100 font-bold opacity-90 text-xs md:text-sm">Paket 1 - Simulasi Ujian Standar Nasional</p>
+            </div>
+            <div class="p-8 text-slate-700 text-center text-sm">
+                <div class="grid grid-cols-2 gap-4 mb-8">
+                    <div class="bg-slate-50 p-4 rounded-2xl border border-slate-100 text-center">
+                        <p class="text-[10px] uppercase font-bold text-slate-400 mb-1">Jumlah Soal</p>
+                        <p class="text-2xl font-black text-slate-800 tracking-tighter">30 Butir</p>
+                    </div>
+                    <div class="bg-slate-50 p-4 rounded-2xl border border-slate-100 text-center">
+                        <p class="text-[10px] uppercase font-bold text-slate-400 mb-1">Waktu</p>
+                        <p class="text-2xl font-black text-slate-800 tracking-tighter">75 Menit</p>
+                    </div>
+                </div>
+
+                <div class="space-y-4 mb-8 text-left">
+                    <div>
+                        <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 ml-1">Identitas Murid</label>
+                        <input type="text" id="input-name" placeholder="Nama Lengkap Kamu..." class="w-full px-5 py-4 rounded-2xl bg-slate-50 border border-slate-200 focus:border-blue-600 outline-none font-bold mb-3 transition-all">
+                        <input type="text" id="input-school" placeholder="Asal Sekolah..." class="w-full px-5 py-4 rounded-2xl bg-slate-50 border border-slate-200 focus:border-blue-600 outline-none font-bold transition-all">
+                    </div>
+                </div>
+
+                <button onclick="startTest()" class="w-full bg-blue-600 text-white py-5 rounded-2xl font-black text-xl hover:bg-blue-700 shadow-xl transition-all transform active:scale-95 uppercase tracking-widest">
+                    Mulai Tryout
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. AREA UJIAN -->
+    <div id="main-test-area" class="hidden max-w-6xl mx-auto py-6 px-4 flex flex-col lg:flex-row gap-6 fade-in">
+        <div class="flex-1">
+            <div class="flex justify-between items-center mb-6 bg-white p-5 rounded-2xl shadow-sm border border-slate-200">
+                <div class="flex flex-col text-left text-sm">
+                    <h1 class="text-xl font-bold text-slate-900 leading-tight">TO 1: Matematika SD</h1>
+                    <p id="user-display" class="text-[10px] text-blue-600 font-black mt-1 uppercase tracking-widest"></p>
+                </div>
+                <div class="bg-red-50 px-4 py-2 rounded-xl text-red-600 font-black text-2xl font-mono border border-red-100 shadow-sm" id="timer">75:00</div>
+            </div>
+
+            <div id="quiz-card" class="bg-white rounded-2xl shadow-xl overflow-hidden border border-slate-200 text-left">
+                <div class="bg-slate-50 p-6 border-b border-slate-100" id="stimulus-content-box">
+                    <div id="stimulus-text" class="text-slate-700 leading-relaxed font-medium"></div>
+                </div>
+                <div class="p-8">
+                    <div class="flex items-start gap-4 mb-6">
+                        <span id="q-num" class="bg-slate-800 text-white font-bold px-4 py-2 rounded-xl shadow-md shrink-0">1</span>
+                        <h2 id="question-text" class="text-lg font-bold pt-1 leading-snug text-slate-800"></h2>
+                    </div>
+                    <div id="options-container" class="space-y-3"></div>
+                </div>
+                <div class="p-6 bg-slate-50 flex justify-between border-t border-slate-100 text-sm font-bold uppercase tracking-widest">
+                    <button id="prev-btn" onclick="changeQuestion(-1)" class="text-slate-400 hover:text-blue-600 transition-colors uppercase">Sebelumnya</button>
+                    <button id="next-btn" onclick="changeQuestion(1)" class="bg-blue-600 text-white px-8 py-2.5 rounded-xl hover:bg-blue-700 shadow-lg transition-all uppercase">Selanjutnya</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="lg:w-80 text-center">
+            <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 sticky top-6">
+                <h3 class="font-bold text-slate-900 mb-4 text-[10px] uppercase tracking-widest opacity-50">Navigasi Soal</h3>
+                <div id="nav-grid" class="grid grid-cols-5 gap-2 mb-6"></div>
+                <button onclick="confirmFinish()" class="w-full bg-emerald-600 text-white py-4 rounded-xl font-black shadow-lg hover:bg-emerald-700 transition-all uppercase text-sm tracking-widest">KIRIM JAWABAN</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. HALAMAN HASIL -->
+    <div id="result-screen" class="hidden min-h-screen bg-slate-50 flex items-center justify-center p-6 py-12 text-center text-slate-800">
+        <div class="max-w-2xl w-full bg-white rounded-[40px] shadow-2xl p-10 border border-slate-200 fade-in text-center">
+            <h2 class="text-3xl font-black text-slate-900 uppercase italic tracking-tighter">Hasil Tryout</h2>
+            <div class="my-6 py-8 border-y border-slate-100">
+                <p class="text-slate-400 text-xs font-bold uppercase mb-1 tracking-widest">Skor Akhir Kamu</p>
+                <div id="final-score" class="text-8xl font-black text-blue-600 leading-none">0</div>
+                <p class="mt-4 font-bold text-slate-600 text-sm uppercase tracking-widest italic">Benar <span id="correct-count">0</span> dari 30 Soal</p>
+            </div>
+
+            <div class="mb-10 text-left text-slate-700">
+                <h3 class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4 border-b border-slate-100 pb-2 text-center">Ringkasan Hasil Per Nomor</h3>
+                <div id="eval-grid" class="flex flex-wrap gap-2 justify-center"></div>
+            </div>
+            
+            <div class="space-y-4">
+                <button onclick="sendToWA()" class="w-full bg-emerald-500 text-white py-5 rounded-3xl font-black text-lg flex items-center justify-center gap-3 hover:bg-emerald-600 transition-all shadow-xl shadow-emerald-100 uppercase tracking-widest">
+                    Kirim Hasil ke WA Tutor
+                </button>
+                <button onclick="location.reload()" class="w-full bg-slate-900 text-white py-5 rounded-3xl font-black uppercase tracking-widest hover:bg-black transition-all shadow-lg text-slate-50">Ulangi Tryout</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL KONFIRMASI -->
+    <div id="confirm-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm text-center">
+        <div class="bg-white rounded-3xl p-10 max-w-sm w-full shadow-2xl border border-slate-100 text-center">
+            <h3 class="text-2xl font-black text-slate-900 mb-4 uppercase tracking-tighter text-center">Selesai?</h3>
+            <p class="text-slate-500 text-sm mb-8 leading-relaxed font-medium text-center">Pastikan semua soal sudah terjawab dengan teliti sebelum dikirim ke tutor.</p>
+            <div class="flex gap-3 font-bold uppercase text-[10px] tracking-widest">
+                <button onclick="closeModal()" class="flex-1 py-4 text-slate-400 bg-slate-100 rounded-2xl transition-colors uppercase text-xs">Batal</button>
+                <button onclick="finishQuiz()" class="flex-1 py-4 font-black text-white bg-blue-600 rounded-2xl shadow-lg transition-colors text-slate-50 uppercase text-xs">Kirim</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            { 
+                type: "mcq", 
+                stimulus: "Hasil pengerjaan operasi hitung campuran bilangan.", 
+                question: "Hasil dari \\( \\sqrt{1.225} + 2^3 \\times \\frac{1}{4} - 1,5 \\) adalah ....", 
+                options: ["35,5", "36,0", "36,5", "37,0"], 
+                answer: 0 
+            },
+            { 
+                type: "checkbox", 
+                stimulus: "Andi, Budi, dan Cici membeli pita dengan panjang yang berbeda:<br>Andi: 2,4 meter<br>Budi: \\( 2 \\frac{1}{2} \\) meter<br>Cici: 225 cm", 
+                question: "Manakah pernyataan berikut yang benar? (Jawaban benar lebih dari satu)", 
+                options: ["Pita Budi adalah yang paling panjang.", "Selisih pita Andi dan Cici adalah 15 cm.", "Jika pita Andi dan Cici disambung, panjangnya menjadi 4,65 meter.", "Jika masing-masing pita dipotong 0,5 meter, sisa pita Cici adalah yang terpendek."], 
+                answer: [0, 1, 2, 3] 
+            },
+            { 
+                type: "mcq", 
+                stimulus: "Dua buah bus berangkat dari terminal yang sama. Bus A berangkat setiap 45 menit, dan Bus B setiap 60 menit. Jika pada pukul 06.00 kedua bus berangkat bersamaan untuk pertama kalinya.", 
+                question: "Pada pukul berapa mereka akan berangkat bersamaan untuk ketiga kalinya?", 
+                options: ["09.00", "10.00", "11.00", "12.00"], 
+                answer: 3 
+            },
+            { 
+                type: "tf", 
+                stimulus: "Toko Serba Ada ingin membuat paket sembako dari 84 kg beras, 56 kg gula, dan 28 kg minyak goreng.", 
+                question: "Tentukan Benar atau Salah pernyataan berikut!", 
+                options: ["Jumlah paket maksimal yang dapat dibuat adalah 14 paket.", "Setiap paket berisi 3 kg beras jika dibuat 28 paket maksimal.", "Total berat satu paket maksimal (FPB) adalah 6 kg."], 
+                answer: [false, true, true] 
+            },
+            { 
+                type: "mcq", 
+                stimulus: "Perhatikan pola bilangan berikut: \\( 2, 6, 12, 20, 30, \\dots \\)", 
+                question: "Bilangan pada urutan ke-10 adalah ....", 
+                options: ["90", "100", "110", "132"], 
+                answer: 2 
+            },
+            { 
+                type: "mcq", 
+                stimulus: "<img src='TO SD 1.6.png' class='stimulus-img' onerror=\"this.style.display='none'\"> Perhatikan gambar jaring-jaring di atas! Jaring-jaring kubus dengan 6 simbol berbeda. Simbol Bintang di tengah, Bulan di atas Bintang, Matahari di bawah Bintang, Hati di kiri Bintang, Awan di kanan Bintang, Kilat di kanan Awan.", 
+                question: "Jika simbol Bintang berada di sisi depan, dan simbol Matahari berada di sisi bawah, maka simbol yang berada di sisi belakang adalah ....", 
+                options: ["Bulan", "Hati", "Awan", "Kilat"], 
+                answer: 3 
+            },
+            { 
+                type: "tf", 
+                stimulus: "<img src='TO SD 1.7.png' class='stimulus-img' onerror=\"this.style.display='none'\"> Sebuah benda dibangun dari kubus-kubus satuan. Pandangan Depan menunjukkan 3 kolom dengan tinggi 3, 2, dan 3. Pandangan Atas menunjukkan grid 2x3 di mana 5 kotak terisi kubus dan 1 kotak kosong di pojok.", 
+                question: "Tentukan Benar atau Salah!", 
+                options: ["Jumlah minimal kubus yang membentuk benda tersebut adalah 11 buah.", "Jumlah maksimal kubus yang mungkin adalah 15 buah.", "Benda tersebut memiliki tinggi 3 satuan."], 
+                answer: [false, false, true] 
+            },
+            { 
+                type: "mcq", 
+                stimulus: "<img src='TO SD 1.8.png' class='stimulus-img' onerror=\"this.style.display='none'\"> Perhatikan gambar bangun gabungan di atas! Bangun L dengan sisi luar: sisi kiri 15 cm, sisi bawah 12 cm, sisi kanan 6 cm, sisi atas 5 cm.", 
+                question: "Berapakah keliling bangun tersebut?", 
+                options: ["38 cm", "44 cm", "54 cm", "60 cm"], 
+                answer: 2 
+            },
+            { 
+                type: "mcq", 
+                stimulus: "Sebuah roda sepeda memiliki jari-jari 28 cm. Jika roda tersebut berputar sebanyak 500 kali, berapa kilometer jarak yang ditempuh? (Gunakan \\( \\pi = 22/7 \\))", 
+                question: "Jarak yang ditempuh roda adalah ....", 
+                options: ["0,44 km", "0,88 km", "1,76 km", "4,40 km"], 
+                answer: 1 
+            },
+            { 
+                type: "checkbox", 
+                stimulus: "Diberikan sebuah segiempat dengan ciri: Dua pasang sisi sama panjang. Hanya memiliki satu pasang sudut yang sama besar. Diagonalnya berpotongan tegak lurus tetapi tidak sama panjang.", 
+                question: "Bangun tersebut adalah ....", 
+                options: ["Belah Ketupat", "Layang-layang", "Trapesium", "Persegi"], 
+                answer: [1] 
+            },
+            { 
+                type: "mcq", 
+                stimulus: "Andi berangkat dari Kota A ke Kota B pukul 08.00 dengan kecepatan 40 km/jam. Pada saat yang sama, Budi berangkat dari Kota B ke Kota A dengan kecepatan 60 km/jam. Jika jarak Kota A dan B adalah 150 km.", 
+                question: "Pada pukul berapa mereka akan berpapasan?", 
+                options: ["09.15", "09.30", "09.45", "10.00"], 
+                answer: 1 
+            },
+            { 
+                type: "mcq", 
+                stimulus: "Sebuah kolam ikan berkapasitas \\( 2,4\\ m^3 \\). Kolam tersebut sedang dikuras dengan pompa yang memiliki debit 40 liter/menit.", 
+                question: "Berapa jam waktu yang dibutuhkan hingga kolam kosong?", 
+                options: ["1 jam", "1,5 jam", "2 jam", "2,5 jam"], 
+                answer: 0 
+            },
+            { 
+                type: "tf", 
+                stimulus: "Sebuah truk pengangkut memiliki berat kosong 1,5 ton. Truk tersebut memuat 20 karung beras (masing-masing 50 kg) dan 5 kuintal jagung.", 
+                question: "Tentukan Benar atau Salah pernyataan mengenai berat berikut!", 
+                options: ["Total muatan truk (beras + jagung) adalah 1.500 kg.", "Berat truk beserta isinya adalah 3.000 kg.", "Berat beras lebih besar daripada berat jagung."], 
+                answer: [true, true, true] 
+            },
+            { 
+                type: "mcq", 
+                stimulus: "Sebuah jam dinding menunjukkan pukul 15.40.", 
+                question: "Besar sudut terkecil yang dibentuk oleh kedua jarum jam adalah ....", 
+                options: ["110°", "130°", "145°", "150°"], 
+                answer: 1 
+            },
+            { 
+                type: "mcq", 
+                stimulus: "Lantai sebuah ruangan berukuran \\( 6\\ m \\times 4\\ m \\) akan ditutup ubin persegi berukuran \\( 40\\ cm \\times 40\\ cm \\). Jika satu dus ubin berisi 5 keping.", 
+                question: "Berapa dus ubin minimal yang harus dibeli?", 
+                options: ["25 dus", "30 dus", "35 dus", "40 dus"], 
+                answer: 1 
+            },
+            { 
+                type: "mcq", 
+                stimulus: "<img src='TO SD 1.16.png' class='stimulus-img' onerror=\"this.style.display='none'\"> Diagram batang menunjukkan penjualan buku di Toko Maju selama 4 hari: Senin=12, Selasa=15, Rabu=Kosong, Kamis=18. Jika rata-rata penjualan adalah 15 buku.", 
+                question: "Maka penjualan pada hari Rabu adalah ....", 
+                options: ["12 buku", "15 buku", "16 buku", "18 buku"], 
+                answer: 1 
+            },
+            { 
+                type: "checkbox", 
+                stimulus: "Data berat badan 5 pemain basket: 72 kg, 68 kg, 75 kg, 72 kg, 73 kg.", 
+                question: "Pilih semua pernyataan yang benar!", 
+                options: ["Modus berat badan adalah 72 kg.", "Rata-rata berat badan adalah 72 kg.", "Berat badan terberat adalah 75 kg.", "Ada 3 pemain yang beratnya di atas rata-rata."], 
+                answer: [0, 1, 2] 
+            },
+            { 
+                type: "mcq", 
+                stimulus: "<img src='TO SD 1.18.png' class='stimulus-img' onerror=\"this.style.display='none'\"> Perhatikan diagram lingkaran jenis pekerjaan orang tua siswa kelas 6: PNS 20%, TNI 15%, Petani 40%, Swasta sisanya. Total siswa 60 orang.", 
+                question: "Berapa banyak orang tua siswa yang bekerja di sektor swasta?", 
+                options: ["9 orang", "12 orang", "15 orang", "18 orang"], 
+                answer: 2 
+            },
+            { 
+                type: "mcq", 
+                stimulus: "Andi berjalan 3 meter ke arah utara, kemudian 4 meter ke arah timur.", 
+                question: "Jarak terpendek Andi sekarang dari posisi awal adalah ....", 
+                options: ["5 meter", "7 meter", "10 meter", "12 meter"], 
+                answer: 0 
+            },
+            { 
+                type: "mcq", 
+                stimulus: "Sebuah toko baju memberikan diskon 'Beli 2 Gratis 1'. Jika harga satu baju adalah Rp120.000,00.", 
+                question: "Berapa persen sebenarnya total diskon yang kita dapatkan jika mengambil promo tersebut?", 
+                options: ["25%", "33,3%", "40%", "50%"], 
+                answer: 1 
+            },
+            { 
+                type: "tf", 
+                stimulus: "<img src='TO SD 1.21.png' class='stimulus-img' onerror=\"this.style.display='none'\"> Sebuah akuarium berbentuk balok (\\( 50 \\times 30 \\times 40\\ cm \\)) berisi air 3/4 bagian.", 
+                question: "Tentukan Benar atau Salah pernyataan berikut!", 
+                options: ["Kapasitas penuh akuarium adalah 60 liter.", "Volume air di dalam akuarium adalah 45 liter.", "Ketinggian air dalam akuarium adalah 30 cm."], 
+                answer: [true, true, true] 
+            },
+            { 
+                type: "mcq", 
+                stimulus: "Suatu pekerjaan dapat diselesaikan oleh 12 orang dalam waktu 15 hari. Jika pekerjaan tersebut ingin diselesaikan dalam waktu 10 hari.", 
+                question: "Berapa orang tambahan yang diperlukan?", 
+                options: ["6 orang", "8 orang", "18 orang", "20 orang"], 
+                answer: 0 
+            },
+            { 
+                type: "mcq", 
+                stimulus: "Hasil dari \\( 1,2\\ \\text{kuintal} + 45\\ \\text{kg} - 25.000\\ \\text{gram} \\) adalah ....", 
+                question: "Total berat dalam kg adalah ....", 
+                options: ["120 kg", "140 kg", "150 kg", "165 kg"], 
+                answer: 1 
+            },
+            { 
+                type: "mcq", 
+                stimulus: "Debit air terjun adalah \\( 12\\ m^3/\\text{menit} \\).", 
+                question: "Berapa liter air yang mengalir dalam waktu 1 detik?", 
+                options: ["100 liter", "200 liter", "400 liter", "600 liter"], 
+                answer: 1 
+            },
+            { 
+                type: "checkbox", 
+                stimulus: "Skala pada peta adalah 1 : 2.500.000. Jarak kota A ke B pada peta adalah 6 cm.", 
+                question: "Pilih semua pernyataan yang benar!", 
+                options: ["Jarak sebenarnya adalah 150 km.", "Jika mobil melaju 75 km/jam, butuh 2 jam untuk sampai.", "Jarak 3 cm pada peta mewakili 75 km.", "Skala tersebut berarti 1 cm mewakili 250 km."], 
+                answer: [0, 1, 2] 
+            },
+            { 
+                type: "mcq", 
+                stimulus: "Sebuah botol minuman berbentuk tabung dengan diameter 14 cm dan tinggi 20 cm. Jika botol terisi air setengahnya.", 
+                question: "Volume air tersebut adalah .... (Gunakan \\( \\pi = 22/7 \\))", 
+                options: ["1.540 cm³", "3.080 cm³", "4.620 cm³", "6.160 cm³"], 
+                answer: 0 
+            },
+            { 
+                type: "checkbox", 
+                stimulus: "Dina memiliki selembar pita sepanjang 3,6 meter. Ia memotong pita tersebut untuk menghias 4 kado yang sama besar. Sisa pita Dina setelah menghias kado adalah 40 cm.", 
+                question: "Pilih semua pernyataan yang benar!", 
+                options: ["Total panjang pita yang digunakan untuk menghias kado adalah 3,2 meter.", "Panjang pita untuk satu kado adalah 0,8 meter.", "Panjang pita satu kado setara dengan 800 mm.", "Jika Dina memiliki 5 kado, pita awal 3,6 meter akan cukup tanpa sisa."], 
+                answer: [0, 1, 2] 
+            },
+            { 
+                type: "mcq", 
+                stimulus: "Andi lari mengelilingi lapangan berbentuk lingkaran dengan diameter 14 m sebanyak 10 kali.", 
+                question: "Jarak total yang ditempuh Andi adalah .... (Gunakan \\( \\pi = 22/7 \\))", 
+                options: ["140 m", "220 m", "440 m", "880 m"], 
+                answer: 2 
+            },
+            { 
+                type: "mcq", 
+                stimulus: "Dua buah bilangan memiliki rata-rata 35. Jika salah satu bilangan adalah 24.", 
+                question: "Berapakah bilangan lainnya?", 
+                options: ["46", "48", "50", "52"], 
+                answer: 0 
+            },
+            { 
+                type: "mcq", 
+                stimulus: "Hasil pengerjaan operasi hitung pangkat dan akar.", 
+                question: "Hasil dari \\( (5^2 + \\sqrt{144}) \\times 2 - 10 \\) adalah ....", 
+                options: ["54", "64", "74", "84"], 
+                answer: 1 
+            }
+        ];
+
+        let currentIdx = 0;
+        let userAnswers = new Array(questions.length).fill(null);
+        let student = { name: "", school: "" };
+        let timeLeft = 75 * 60;
+        let timerInterval;
+        let isFinished = false;
+
+        function startTest() {
+            student.name = document.getElementById('input-name').value.trim();
+            student.school = document.getElementById('input-school').value.trim();
+            if (!student.name || !student.school) { alert("Harap isi Nama & Sekolah!"); return; }
+            document.getElementById('intro-screen').classList.add('hidden');
+            document.getElementById('main-test-area').classList.remove('hidden');
+            document.getElementById('user-display').innerText = `Murid: ${student.name} | Sekolah: ${student.school}`;
+            initNav();
+            loadQuestion();
+            timerInterval = setInterval(updateTimer, 1000);
+        }
+
+        function updateTimer() {
+            timeLeft--;
+            if (timeLeft <= 0) { finishQuiz(); return; }
+            let m = Math.floor(timeLeft / 60);
+            let s = timeLeft % 60;
+            document.getElementById('timer').innerText = `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+        }
+
+        function initNav() {
+            const grid = document.getElementById('nav-grid');
+            grid.innerHTML = '';
+            questions.forEach((_, i) => {
+                const btn = document.createElement('div');
+                btn.id = `nav-${i}`;
+                btn.className = 'nav-btn nav-unanswered border-slate-200 text-xs';
+                btn.innerText = i + 1;
+                btn.onclick = () => { currentIdx = i; loadQuestion(); };
+                grid.appendChild(btn);
+            });
+        }
+
+        function loadQuestion() {
+            const q = questions[currentIdx];
+            document.getElementById('q-num').innerText = currentIdx + 1;
+            document.getElementById('stimulus-text').innerHTML = q.stimulus;
+            document.getElementById('question-text').innerHTML = q.question;
+            
+            document.querySelectorAll('.nav-btn').forEach((btn, idx) => {
+                btn.classList.remove('nav-current');
+                if (idx === currentIdx) btn.classList.add('nav-current');
+                const ans = userAnswers[idx];
+                let done = ans !== null && (!Array.isArray(ans) || (ans.length > 0 && !ans.includes(null)));
+                btn.className = `nav-btn ${done ? 'nav-answered' : 'nav-unanswered'} ${idx === currentIdx ? 'nav-current' : ''} text-xs`;
+            });
+
+            const cont = document.getElementById('options-container');
+            cont.innerHTML = '';
+
+            if (q.type === 'mcq') {
+                q.options.forEach((opt, i) => {
+                    const d = document.createElement('div');
+                    d.className = `option-card p-4 rounded-xl flex items-center gap-3 ${userAnswers[currentIdx] === i ? 'selected shadow-sm' : ''}`;
+                    d.innerHTML = `<span class="w-8 h-8 rounded-full border-2 flex items-center justify-center font-bold text-xs shrink-0">${String.fromCharCode(65 + i)}</span> <span>${opt}</span>`;
+                    d.onclick = () => { userAnswers[currentIdx] = i; loadQuestion(); };
+                    cont.appendChild(d);
+                });
+            } else if (q.type === 'checkbox') {
+                if (!userAnswers[currentIdx]) userAnswers[currentIdx] = [];
+                q.options.forEach((opt, i) => {
+                    const sel = userAnswers[currentIdx].includes(i);
+                    const d = document.createElement('div');
+                    d.className = `option-card p-4 rounded-xl flex items-center gap-3 ${sel ? 'selected shadow-sm' : ''}`;
+                    d.innerHTML = `<div class="w-6 h-6 border-2 rounded flex items-center justify-center text-blue-600 font-black">${sel ? '✓' : ''}</div> <span>${opt}</span>`;
+                    d.onclick = () => {
+                        const pos = userAnswers[currentIdx].indexOf(i);
+                        if (pos > -1) userAnswers[currentIdx].splice(pos, 1);
+                        else userAnswers[currentIdx].push(i);
+                        loadQuestion();
+                    };
+                    cont.appendChild(d);
+                });
+            } else if (q.type === 'tf') {
+                if (!userAnswers[currentIdx]) userAnswers[currentIdx] = new Array(q.options.length).fill(null);
+                q.options.forEach((opt, i) => {
+                    const row = document.createElement('div');
+                    row.className = "flex flex-col md:flex-row justify-between p-3 bg-slate-50 rounded-lg border gap-3 mb-2";
+                    row.innerHTML = `<p class="text-sm font-bold flex-1 text-slate-700">${opt}</p>
+                        <div class="flex gap-2 text-center justify-center">
+                            <button onclick="setTF(${i}, true)" class="px-5 py-2 rounded-xl text-xs font-black ${userAnswers[currentIdx][i] === true ? 'bg-emerald-600 text-white shadow-lg' : 'bg-white border text-slate-400'} uppercase">Benar</button>
+                            <button onclick="setTF(${i}, false)" class="px-5 py-2 rounded-xl text-xs font-black ${userAnswers[currentIdx][i] === false ? 'bg-rose-600 text-white shadow-lg' : 'bg-white border text-slate-400'} uppercase">Salah</button>
+                        </div>`;
+                    cont.appendChild(row);
+                });
+            }
+            document.getElementById('prev-btn').disabled = currentIdx === 0;
+            document.getElementById('next-btn').innerText = currentIdx === questions.length - 1 ? "FINISH" : "SELANJUTNYA";
+            if (window.MathJax) { MathJax.typesetPromise(); }
+        }
+
+        window.setTF = (i, v) => { userAnswers[currentIdx][i] = v; loadQuestion(); };
+        function changeQuestion(s) { 
+            if (s === 1 && currentIdx === questions.length - 1) { confirmFinish(); return; }
+            currentIdx += s; loadQuestion(); 
+        }
+
+        function confirmFinish() { document.getElementById('confirm-modal').classList.remove('hidden'); }
+        function closeModal() { document.getElementById('confirm-modal').classList.add('hidden'); }
+
+        let FINAL_SCORE = 0;
+        let WRONG_NOS = [];
+        let CORRECT_MAP = [];
+
+        function finishQuiz() {
+            if(isFinished) return;
+            isFinished = true;
+            clearInterval(timerInterval);
+            let ok = 0;
+            WRONG_NOS = [];
+            CORRECT_MAP = [];
+
+            questions.forEach((q, i) => {
+                const ua = userAnswers[i];
+                let isOk = false;
+                if (q.type === 'mcq' && ua === q.answer) isOk = true;
+                else if (q.type === 'checkbox' && Array.isArray(ua) && ua.sort().join(',') === q.answer.sort().join(',')) isOk = true;
+                else if (q.type === 'tf' && JSON.stringify(ua) === JSON.stringify(q.answer)) isOk = true;
+                
+                if (isOk) ok++; else WRONG_NOS.push(i + 1);
+                CORRECT_MAP.push(isOk);
+            });
+
+            FINAL_SCORE = Math.round((ok / questions.length) * 100);
+            document.getElementById('main-test-area').classList.add('hidden');
+            document.getElementById('confirm-modal').classList.add('hidden');
+            document.getElementById('result-screen').classList.remove('hidden');
+            document.getElementById('final-score').innerText = FINAL_SCORE;
+            document.getElementById('correct-count').innerText = ok;
+
+            const ev = document.getElementById('eval-grid');
+            ev.innerHTML = '';
+            CORRECT_MAP.forEach((c, i) => {
+                const b = document.createElement('div');
+                b.className = `res-box ${c ? 'res-correct' : 'res-wrong'}`;
+                b.innerText = i + 1;
+                ev.appendChild(b);
+            });
+        }
+
+        function sendToWA() {
+            const text = `*LAPORAN TRYOUT MATEMATIKA SD*\n*PAKET 1 - TKA SD 2026*\n\n👤 Nama: ${student.name}\n🏫 Sekolah: ${student.school}\n📈 *Skor: ${FINAL_SCORE}*\n✅ Benar: ${document.getElementById('correct-count').innerText} / 30\n❌ Salah Nomor: ${WRONG_NOS.length > 0 ? WRONG_NOS.join(', ') : 'Tidak ada'}\n\n⏰ Selesai: ${new Date().toLocaleString('id-ID')}`;
+            window.open(`https://wa.me/${WA_TUTOR}?text=${encodeURIComponent(text)}`, '_blank');
+        }
+    </script>
+</body>
+</html>

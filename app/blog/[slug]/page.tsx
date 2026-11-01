@@ -1,0 +1,4 @@
+import Link from 'next/link';
+import { notFound } from 'next/navigation';
+import { createPublicClient } from '@/lib/supabase/public';
+export default async function ArticlePage({params}:{params:Promise<{slug:string}>}){const {slug}=await params;const sb=createPublicClient();const {data:a}=await sb.from('tutorin_articles').select('*').eq('slug',slug).eq('status','published').maybeSingle();if(!a)notFound();return <div className="section"><article className="container" style={{maxWidth:860}}><Link className="text-link" href="/blog">← Kembali ke Blog</Link><div className="detail-hero"><span className="badge">{a.category||'Artikel'}</span><h1>{a.title}</h1><p>{a.excerpt||''}</p></div>{a.cover_url&&<img src={a.cover_url} alt="" style={{borderRadius:20,marginBottom:30}}/>}<div style={{whiteSpace:'pre-wrap',lineHeight:1.8,fontSize:17}}>{a.content||''}</div></article></div>}

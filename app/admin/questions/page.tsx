@@ -1,0 +1,1 @@
+export default function Page(){return <><div className="section-title"><div className="eyebrow">CMS / questions</div><h1>Questions</h1><p>Modul CRUD ini disiapkan untuk dihubungkan ke Supabase.</p></div><div className="notice">Belum terhubung ke database. Setelah migration diterapkan, modul ini dapat dibuat menjadi CRUD penuh dengan role dan Row Level Security.</div></>}
