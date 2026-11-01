@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { createClient } from '@/lib/supabase';
 
 type Row = Record<string, any> & { id: string };
-const empty = { title:'', slug:'', category:'tka', level:'sd', subject:'', duration_minutes:60, question_count:40, status:'draft' };
+const empty = { title:'', slug:'', category:'TKA SD', level:'SD', subject:'Matematika', duration_minutes:75, question_count:30, price:null, payment_instructions:'', registration_open:false, status:'draft' };
 
 export default function TryoutManager() {
   const sb = createClient();
@@ -28,6 +28,11 @@ export default function TryoutManager() {
   async function save(e:React.FormEvent){
     e.preventDefault(); if(!form) return; setSaving(true); setError('');
     const payload = {...form}; delete payload.id; delete payload.created_at; delete payload.updated_at;
+    if(payload.registration_open && (!payload.price || Number(payload.price)<=0)) {
+      setError('Isi harga tryout yang valid sebelum membuka pendaftaran.');
+      setSaving(false);
+      return;
+    }
     if(payload.status==='published' && !payload.published_at) payload.published_at=new Date().toISOString();
     const result = edit ? await sb.from('tutorin_tryouts').update(payload).eq('id',edit.id) : await sb.from('tutorin_tryouts').insert(payload);
     if(result.error) setError(result.error.message); else {setForm(null);setEdit(null);await load();}
@@ -64,11 +69,14 @@ export default function TryoutManager() {
         <label className="label">Subject<input className="input" value={form.subject||''} onChange={e=>update('subject',e.target.value)}/></label>
         <label className="label">Durasi (menit)<input className="input" type="number" value={form.duration_minutes??0} onChange={e=>update('duration_minutes',Number(e.target.value))}/></label>
         <label className="label">Jumlah soal<input className="input" type="number" value={form.question_count??0} onChange={e=>update('question_count',Number(e.target.value))}/></label>
+        <label className="label">Harga (Rupiah)<input className="input" type="number" min="0" value={form.price??''} placeholder="Masukkan harga TO" onChange={e=>update('price',e.target.value===''?null:Number(e.target.value))}/></label>
+        <label className="label">Petunjuk pembayaran manual<textarea className="input" rows={4} value={form.payment_instructions||''} placeholder="Nama bank/e-wallet, nomor rekening, nama penerima, cara mengirim bukti" onChange={e=>update('payment_instructions',e.target.value)}/></label>
+        <label className="label">Pendaftaran<select className="input" value={String(form.registration_open??false)} onChange={e=>update('registration_open',e.target.value==='true')}><option value="false">Ditutup</option><option value="true">Dibuka</option></select></label>
         <label className="label">Status<select className="input" value={form.status||'draft'} onChange={e=>update('status',e.target.value)}><option value="draft">draft</option><option value="published">published</option><option value="archived">archived</option></select></label>
       </div>
       <div className="notice" style={{marginTop:16}}>Path otomatis: <strong>tryouts/{String(form.category||'kategori').toLowerCase()}/{String(form.level||'level').toLowerCase()}/{String(form.slug||'slug').toLowerCase()}</strong></div>
       <div className="cms-actions"><button className="button button-primary" disabled={saving}>{saving?'Menyimpan…':edit?'Simpan Metadata':'Simpan Metadata'}</button>{!edit&&<button type="button" className="button button-light" disabled={creating} onClick={createFromTemplate}>{creating?'Membuat folder…':'Buat dari Template + GitHub'}</button>}<button type="button" className="button button-light" onClick={()=>setForm(null)}>Batal</button></div>
     </form>}
-    <div className="table-wrap"><table className="table"><thead><tr><th>Nama</th><th>Kategori</th><th>Level</th><th>Soal</th><th>GitHub</th><th>Status</th><th>Aksi</th></tr></thead><tbody>{filtered.map(r=><tr key={r.id}><td><strong>{r.title}</strong><br/><small>{r.slug}</small></td><td>{r.category||'—'}</td><td>{r.level||'—'}</td><td>{r.question_count??0}</td><td>{r.github_path||'—'}</td><td><span className="badge">{r.status}</span></td><td><div className="row-actions"><button className="button button-light" onClick={()=>startEdit(r)}>Edit</button><button className="button button-danger" onClick={()=>remove(r)}>Hapus</button></div></td></tr>)}{filtered.length===0&&<tr><td colSpan={7}>Belum ada TO.</td></tr>}</tbody></table></div>
+    <div className="table-wrap"><table className="table"><thead><tr><th>Nama</th><th>Kategori</th><th>Level</th><th>Soal</th><th>Harga</th><th>GitHub</th><th>Status</th><th>Aksi</th></tr></thead><tbody>{filtered.map(r=><tr key={r.id}><td><strong>{r.title}</strong><br/><small>{r.slug}</small></td><td>{r.category||'—'}</td><td>{r.level||'—'}</td><td>{r.question_count??0}</td><td>{r.price?`Rp ${Number(r.price).toLocaleString('id-ID')}`:'Belum ditetapkan'}</td><td>{r.github_path||'—'}</td><td><span className="badge">{r.status}</span></td><td><div className="row-actions"><button className="button button-light" onClick={()=>startEdit(r)}>Edit</button><button className="button button-danger" onClick={()=>remove(r)}>Hapus</button></div></td></tr>)}{filtered.length===0&&<tr><td colSpan={8}>Belum ada TO.</td></tr>}</tbody></table></div>
   </>;
 }

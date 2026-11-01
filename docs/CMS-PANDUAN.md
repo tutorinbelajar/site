@@ -27,3 +27,16 @@ Tryout dikelola di CMS → Tryout. Jangan ubah status menjadi published sebelum 
 
 ## Mengelola Blog
 Buka CMS → Blog. Isi judul, slug, excerpt, isi artikel, kategori, gambar cover, SEO, dan status publikasi.
+
+
+## Pendaftaran Tryout dan kode peserta
+Setelah menjalankan migration `0005_tutorin_tryout_registration.sql`, admin dapat membuka `/admin/registrations` atau klik menu **Pendaftar TO** di CMS.
+- Peserta membuat akun dari `/register`, kemudian mengirim formulir pendaftaran dari halaman detail tryout.
+- Status awal pendaftar adalah `pending`.
+- Admin dapat menekan **Setujui & buat kode** atau **Tolak**.
+- Saat status berubah menjadi `approved`, database menerbitkan kode unik `TKA26-XXXXXXXX` secara otomatis.
+- Kode peserta tampil kembali pada akun peserta di halaman detail tryout.
+- Isi harga pada CMS → Tryout terlebih dahulu. CMS tidak mengizinkan pendaftaran dibuka jika harga belum diisi.
+
+## Pendaftaran TO dengan pembayaran manual
+Lihat `docs/TRYOUT-PAYMENT-ACCESS.md`. Admin perlu mengisi harga dan instruksi pembayaran pada CMS Tryout. Verifikasi bukti pembayaran di CMS > Pendaftar TO, lalu setujui pendaftar untuk menerbitkan kode akses.

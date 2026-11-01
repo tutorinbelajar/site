@@ -2,6 +2,7 @@
 
 import { FormEvent, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
+import Link from 'next/link';
 import { createClient } from '@/lib/supabase';
 
 export default function LoginForm() {
@@ -39,7 +40,7 @@ export default function LoginForm() {
             <div className="eyebrow">Akun Tutorin</div>
             <h1>Masuk</h1>
             <p style={{ color: 'var(--muted)' }}>
-              Gunakan akun Supabase yang sudah diberi akses admin CMS.
+              Masuk ke akun Tutorin untuk mendaftar tryout atau mengakses layanan yang memerlukan akun.
             </p>
           </div>
 
@@ -72,6 +73,7 @@ export default function LoginForm() {
           <button className="button button-primary" disabled={loading}>
             {loading ? 'Memproses…' : 'Masuk'}
           </button>
+          <p style={{ color: 'var(--muted)', textAlign: 'center' }}>Belum punya akun? <Link href={`/register${params.get('next') ? `?next=${encodeURIComponent(params.get('next')!)}` : ''}`} style={{ color: 'var(--green)', fontWeight: 800 }}>Buat akun</Link></p>
         </form>
       </div>
     </div>

@@ -154,3 +154,81 @@ code{overflow-wrap:anywhere}
 .stat-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-bottom:28px}.stat-card{background:white;border:1px solid var(--line);border-radius:18px;padding:20px;min-height:130px}.stat-card strong{display:block;font-size:34px;line-height:1.1;margin:12px 0 6px;color:var(--green)}.stat-card span{color:var(--muted);font-size:13px}.cms-dashboard-links{margin-top:12px}.cms-toolbar{display:grid;grid-template-columns:1fr auto;gap:12px;margin-bottom:16px}.cms-form{margin-bottom:20px}.cms-form-head{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:16px}.cms-form-head h3{margin:5px 0 0}.cms-form-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}.cms-form-grid .label:nth-child(2n+1):last-child{grid-column:1/-1}.textarea{resize:vertical;min-height:120px}.cms-actions,.row-actions{display:flex;gap:8px;flex-wrap:wrap}.button-danger{background:#fff;border:1px solid #f0b8b8;color:#a52828}.button-danger:hover{background:#fff2f2}.error-notice{border-color:#e3aaaa;background:#fff4f4;color:#8f2828}.admin-logout{margin-top:8px;border:1px solid rgba(255,255,255,.18);background:transparent;color:#d9eee4;border-radius:10px;padding:10px 12px;font:inherit;font-weight:750;cursor:pointer;text-align:left}.admin-logout:hover{background:rgba(255,255,255,.1)}
 @media(max-width:1000px){.stat-grid{grid-template-columns:repeat(3,1fr)}}
 @media(max-width:800px){.stat-grid{grid-template-columns:repeat(2,1fr)}.cms-toolbar{grid-template-columns:1fr}.cms-form-grid{grid-template-columns:1fr}.cms-form-grid .label:nth-child(2n+1):last-child{grid-column:auto}}
+
+
+/* Ebook catalog, tryout registration and improved conversion-focused home */
+.hero-lead{font-size:21px!important;font-weight:700;color:#294b3b!important}
+.hero-trust{margin-top:20px;font-size:13px;font-weight:800;color:var(--green);line-height:1.7}
+.hero-proof-card{padding:30px}
+.hero-prompt{display:flex;gap:13px;padding:16px 0;border-top:1px solid var(--line);align-items:flex-start}
+.hero-prompt>span{display:grid;place-items:center;flex:0 0 32px;height:32px;background:var(--mint);border-radius:50%;font-size:12px;font-weight:900;color:var(--green)}
+.hero-prompt strong,.hero-prompt small{display:block}
+.hero-prompt small{margin-top:5px;color:var(--muted);line-height:1.5}
+.challenge-card{min-height:230px}
+.founder-panel{background:#073c29;color:#fff;border-radius:28px;padding:clamp(24px,5vw,54px);margin-bottom:22px}
+.founder-panel .eyebrow{color:#bce8ce}
+.founder-panel h2{font-size:clamp(30px,4vw,46px);line-height:1.1;letter-spacing:-1.5px;max-width:850px;margin:12px 0 20px}
+.founder-panel p{color:#d9eee2;max-width:900px;line-height:1.8;font-size:16px}
+.why-grid-compact .why-card{min-height:300px}
+.service-card{background:#fff;color:var(--text);border:1px solid var(--line);display:flex;flex-direction:column;min-height:350px}
+.service-card p{color:var(--muted);opacity:1;line-height:1.7}
+.service-card .text-link{color:var(--green);margin-top:auto}
+.service-card-top{display:flex;justify-content:space-between;align-items:center}
+.service-number{font-size:12px;font-weight:900;color:var(--green);letter-spacing:.12em}
+.service-card .why-icon{margin:0}
+.service-tagline{margin-top:16px}
+.method-grid-four{grid-template-columns:repeat(4,1fr)}
+.closing-cta{padding:clamp(24px,5vw,48px);border:1px solid var(--line);background:#fff;border-radius:28px;display:flex;align-items:center;justify-content:space-between;gap:28px}
+.closing-cta h2{font-size:clamp(30px,4vw,42px);line-height:1.1;letter-spacing:-1.3px;max-width:700px;margin:10px 0}
+.closing-cta p{color:var(--muted);line-height:1.7;max-width:700px}
+.ebook-intro{display:flex;justify-content:space-between;align-items:center;gap:22px;background:#eaf7ef;border:1px solid var(--line);border-radius:22px;padding:24px;margin-bottom:26px}
+.ebook-intro h2{font-size:26px;letter-spacing:-.7px;margin:10px 0}
+.ebook-intro p{color:var(--muted);line-height:1.6;margin:0}
+.ebook-intro .button{flex:0 0 auto}
+.ebook-card{padding:0;overflow:hidden;display:flex;flex-direction:column}
+.ebook-cover{height:260px;background:#e6f4eb;display:grid;place-items:center;overflow:hidden}
+.ebook-cover img{width:100%;height:100%;object-fit:cover}
+.ebook-cover-fallback{width:100%;height:100%;padding:25px;display:flex;flex-direction:column;justify-content:space-between;background:linear-gradient(145deg,#0b5d3b,#0a3928);color:white}
+.ebook-cover-fallback span{font-weight:900;letter-spacing:.1em}
+.ebook-cover-fallback strong{font-size:26px;line-height:1.15}
+.ebook-cover-fallback small{color:#d8eee0}
+.ebook-card-body{padding:20px;display:flex;flex-direction:column;flex:1}
+.ebook-card-body h3{margin:12px 0 8px}
+.ebook-card-body p{flex:1}
+.ebook-buy-row{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;border-top:1px solid var(--line);padding-top:16px;margin-top:10px}
+.ebook-buy-row small,.tryout-price small{display:block;font-size:12px;color:var(--muted);font-weight:750;margin-bottom:5px}
+.ebook-buy-row .price{font-size:20px}
+.tryout-card{display:flex;flex-direction:column}
+.tryout-card h3{min-height:58px}
+.tryout-card .button{margin-top:12px}
+.tryout-price{background:#f2faf4;border:1px solid var(--line);border-radius:14px;padding:14px;margin-top:auto}
+.tryout-price strong{font-size:22px;color:var(--green);display:block}
+.tryout-note{margin-top:24px}
+.tryout-detail-grid{align-items:start}
+.registration-panel{display:grid;gap:14px}
+.registration-panel h2{margin:0}
+.registration-panel p{color:var(--muted);line-height:1.65}
+.registration-panel small{color:var(--muted);line-height:1.5}
+.participant-code{background:#eaf7ef;border:1px dashed #8bbba0;border-radius:16px;padding:20px}
+.participant-code small{display:block;font-weight:900;letter-spacing:.1em;color:var(--green)}
+.participant-code strong{display:block;font-size:28px;letter-spacing:.08em;color:var(--green);margin:8px 0}
+.participant-code p{margin-bottom:0}
+.detail-price{max-width:330px;margin-top:20px}
+@media(max-width:800px){
+ .hero-trust{font-size:12px}
+ .method-grid-four{grid-template-columns:1fr 1fr}
+ .closing-cta,.ebook-intro{align-items:stretch;flex-direction:column}
+ .closing-cta .hero-actions{display:flex}
+ .ebook-intro .button{width:100%}
+ .ebook-cover{height:230px}
+ .tryout-detail-grid{grid-template-columns:1fr}
+}
+@media(max-width:480px){
+ .method-grid-four{grid-template-columns:1fr}
+ .founder-panel{border-radius:20px}
+ .service-card{min-height:0}
+ .ebook-buy-row{align-items:stretch;flex-direction:column}
+ .ebook-buy-row .button{width:100%}
+ .tryout-price strong{font-size:20px}
+ .participant-code strong{font-size:23px}
+}

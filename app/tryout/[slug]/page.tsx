@@ -1,3 +1,21 @@
-import { notFound } from "next/navigation";
-import { tryouts } from "@/data/content";
-export default async function TryoutDetail({params}:{params:Promise<{slug:string}>}){const {slug}=await params;const t=tryouts.find(x=>x.slug===slug);if(!t)return notFound();return <div className="section"><div className="container"><div className="detail-hero"><div className="eyebrow">Tryout • {t.category}</div><h1>{t.title}</h1><p>{t.questions} soal dengan durasi {t.duration} menit.</p><a className="button button-primary" href="/login">Mulai Tryout</a></div><div className="notice">Halaman pengerjaan akan dihubungkan ke Test Engine + Supabase setelah autentikasi dan database diaktifkan.</div></div></div>}
+import { notFound } from 'next/navigation';
+import { createPublicClient } from '@/lib/supabase/public';
+import TryoutRegistration from '@/components/TryoutRegistration';
+
+const sample = {slug:'tka-sd-matematika-paket-2',title:'Tryout TKA SD Matematika — Paket 2',category:'TKA SD',level:'SD',subject:'Matematika',duration_minutes:75,question_count:30,price:null,registration_open:false,payment_instructions:null};
+
+export default async function TryoutDetailPage({params}:{params:Promise<{slug:string}>}) {
+  const {slug}=await params;
+  const sb=createPublicClient();
+  const {data}=sb ? await sb.from('tutorin_tryouts').select('id,slug,title,category,level,subject,duration_minutes,question_count,price,registration_open,instructions,payment_instructions').eq('slug',slug).eq('status','published').maybeSingle() : {data:null};
+  const item=data || (slug===sample.slug ? sample : null);
+  if(!item) notFound();
+  return <div className="section"><div className="container">
+    <div className="detail-hero"><div className="eyebrow">{item.category||'Tryout'} · {item.subject||'Matematika'}</div><h1>{item.title}</h1>
+      <p>Simulasi TKA untuk membantu murid berlatih, mengatur waktu, dan mengevaluasi pemahaman. Paket ini memuat {item.question_count||30} soal dengan durasi {item.duration_minutes||75} menit.</p>
+      <div className="tags"><span>{item.level||'SD'}</span><span>{item.question_count||30} soal</span><span>{item.duration_minutes||75} menit</span></div>
+      <div className="tryout-price detail-price"><small>Biaya pendaftaran</small><strong>{Number(item.price)>0?`Rp ${Number(item.price).toLocaleString('id-ID')}`:'Harga akan diumumkan'}</strong></div>
+    </div>
+    <div className="grid-2 tryout-detail-grid"><div className="card"><h2>Yang perlu diketahui</h2><ul><li>Buat akun Tutorin sebelum mendaftar.</li><li>Pendaftaran diperiksa dan dikonfirmasi oleh admin.</li><li>Setelah disetujui, peserta menerima kode unik.</li><li>Informasi pelaksanaan akan diberikan melalui kontak yang didaftarkan.</li></ul><p>{item.instructions||'Latihan dirancang untuk menjadi sarana evaluasi kesiapan, bukan jaminan hasil ujian.'}</p></div><TryoutRegistration tryout={item as any}/></div>
+  </div></div>;
+}
