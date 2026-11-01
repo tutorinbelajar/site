@@ -3,9 +3,11 @@ import { createPublicClient } from '@/lib/supabase/public';
 
 export default async function TryoutPage() {
   const sb = createPublicClient();
-  const { data: tryouts, error } = await sb.from('tutorin_tryouts')
-    .select('id,slug,title,category,level,subject,duration_minutes,question_count,deployment_url')
-    .eq('status','published').order('created_at',{ascending:false});
+  const { data: tryouts, error } = sb
+    ? await sb.from('tutorin_tryouts')
+        .select('id,slug,title,category,level,subject,duration_minutes,question_count,deployment_url')
+        .eq('status','published').order('created_at',{ascending:false})
+    : { data: null, error: null };
 
   return <div className="section"><div className="container">
     <SectionTitle eyebrow="Kategori 04 · Tryout" title="Tryout Tutorin sedang dikembangkan"

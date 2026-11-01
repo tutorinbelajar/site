@@ -6,9 +6,11 @@ const storeUrl = 'https://lynk.id/tutorinbelajar';
 
 export default async function EbookPage() {
   const sb = createPublicClient();
-  const { data: ebooks, error } = await sb.from('tutorin_ebooks')
-    .select('id,slug,title,description,category,price,purchase_url,cover_url')
-    .eq('status','published').order('created_at',{ascending:false});
+  const { data: ebooks, error } = sb
+    ? await sb.from('tutorin_ebooks')
+        .select('id,slug,title,description,category,price,purchase_url,cover_url')
+        .eq('status','published').order('created_at',{ascending:false})
+    : { data: null, error: null };
 
   return <div className="section"><div className="container">
     <SectionTitle eyebrow="Kategori 03 · Ebook" title="Ebook latihan soal Tutorin"
@@ -25,6 +27,6 @@ export default async function EbookPage() {
         {Number(e.price)>0 && <div className="price">Rp {Number(e.price).toLocaleString('id-ID')}</div>}
         <a className="button button-primary" href={e.purchase_url||storeUrl} target="_blank" rel="noreferrer">Beli Ebook ↗</a>
       </article>)}</div>
-      : <div className="empty-state"><h3>Katalog ebook sedang disiapkan</h3><p>Untuk melihat ebook yang tersedia dan membeli, kunjungi toko Tutorin di Lynk.id.</p><a className="button button-primary" href={storeUrl} target="_blank" rel="noreferrer">Lihat ebook di Lynk.id ↗</a></div>}
+      : <div className="empty-state"><h3>{sb ? 'Katalog ebook sedang disiapkan' : 'Katalog ebook segera tersedia'}</h3><p>{sb ? 'Untuk melihat ebook yang tersedia dan membeli, kunjungi toko Tutorin di Lynk.id.' : 'Katalog CMS akan tampil setelah konfigurasi database selesai. Ebook dapat dilihat dan dibeli melalui toko Tutorin di Lynk.id.'}</p><a className="button button-primary" href={storeUrl} target="_blank" rel="noreferrer">Lihat ebook di Lynk.id ↗</a></div>}
   </div></div>;
 }
