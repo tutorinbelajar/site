@@ -1,0 +1,12 @@
+{
+  "slug": "paket-01",
+  "title": "Nama Tryout",
+  "category": "tka",
+  "level": "sd",
+  "subject": "",
+  "duration_minutes": 60,
+  "question_count": 0,
+  "engine": "tutorin-test-engine",
+  "version": 1,
+  "entry": "index.html"
+}

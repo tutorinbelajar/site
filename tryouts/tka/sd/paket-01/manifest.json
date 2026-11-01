@@ -1,0 +1,12 @@
+{
+  "slug": "tka-sd-paket-01",
+  "title": "TKA SD Paket 01",
+  "category": "tka",
+  "level": "sd",
+  "subject": "TKA",
+  "durationMinutes": 60,
+  "questionCount": 0,
+  "engine": "tutorin-test-engine",
+  "version": 1,
+  "entry": "index.html"
+}

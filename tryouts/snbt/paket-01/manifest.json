@@ -1,0 +1,12 @@
+{
+  "slug": "snbt-paket-01",
+  "title": "SNBT Paket 01",
+  "category": "snbt",
+  "level": "sma",
+  "subject": "SNBT",
+  "durationMinutes": 60,
+  "questionCount": 0,
+  "engine": "tutorin-test-engine",
+  "version": 1,
+  "entry": "index.html"
+}
