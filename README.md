@@ -87,6 +87,14 @@ Agar CMS dan katalog dinamis berfungsi di production, tambahkan Environment Vari
 
 - `NEXT_PUBLIC_SUPABASE_URL`
 - `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`
-- `NEXT_PUBLIC_TUTORIN_WHATSAPP` (opsional untuk tombol konsultasi)
+- `NEXT_PUBLIC_TUTORIN_WHATSAPP` (nomor WhatsApp admin Tutorin untuk konfirmasi pembayaran TO dan tombol konsultasi; format angka internasional, misalnya `62...`, tanpa `+`)
 
 Setelah menyimpan variabel, lakukan Redeploy. Jangan masukkan `service_role` key ke variabel `NEXT_PUBLIC_*` atau ke source code.
+
+
+## Pendaftaran Tryout, pembayaran manual, dan kode peserta
+Jalankan migration berurutan `0001` sampai `0007` di Supabase SQL Editor. Migration `0005` menambah contoh Tryout TKA SD Matematika Paket 2 (30 soal, 75 menit) dan pendaftaran; migration `0006` adalah versi lama alur upload bukti; migration `0007_tutorin_whatsapp_manual_payment.sql` menonaktifkan alur upload bukti dan menggantinya dengan konfirmasi WhatsApp serta verifikasi mutasi rekening oleh admin.
+
+Tidak ada upload bukti pembayaran dalam alur terbaru. Peserta transfer, tekan tombol konfirmasi WhatsApp, lalu admin mencocokkan transaksi di mutasi rekening dan memilih **Verifikasi & setujui** di CMS. Kode akses unik terbit setelah disetujui. Setel `NEXT_PUBLIC_TUTORIN_WHATSAPP` di Vercel agar tombol WhatsApp mengarah ke nomor admin yang benar. Panduan lengkap ada di `docs/TRYOUT-PAYMENT-ACCESS.md` dan `docs/TRYOUT-PAYMENT-OPS.md`.
+
+Harga Paket 2 sengaja dibiarkan belum ditetapkan karena nominal belum diberikan. Masukkan harga dan instruksi transfer resmi melalui CMS → Tryout sebelum membuka pendaftaran berbayar.
