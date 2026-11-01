@@ -78,3 +78,15 @@ Deploy sebagai project Next.js (misalnya Vercel). Tambahkan environment variable
 - CMS membutuhkan Supabase yang terkonfigurasi; jangan mengunggah service-role key ke environment variable `NEXT_PUBLIC_*`.
 - Cek ketersediaan tutor, nomor WhatsApp, jadwal, dan harga sebelum publikasi.
 - Tryout ditampilkan sebagai in-development sampai program benar-benar siap.
+
+## Catatan deployment Vercel dan Supabase
+
+Halaman publik (`/bimbel`, `/ebook`, `/tryout`, dan `/blog`) sekarang memiliki fallback ketika Supabase belum dikonfigurasi, sehingga build Next.js tidak gagal hanya karena environment variable belum tersedia. Dalam kondisi ini, katalog yang bergantung pada CMS ditampilkan sebagai kosong/placeholder; tautan toko ebook Lynk.id tetap tersedia.
+
+Agar CMS dan katalog dinamis berfungsi di production, tambahkan Environment Variables berikut di Vercel → Project Settings → Environment Variables, untuk Production, Preview, dan Development:
+
+- `NEXT_PUBLIC_SUPABASE_URL`
+- `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`
+- `NEXT_PUBLIC_TUTORIN_WHATSAPP` (opsional untuk tombol konsultasi)
+
+Setelah menyimpan variabel, lakukan Redeploy. Jangan masukkan `service_role` key ke variabel `NEXT_PUBLIC_*` atau ke source code.
